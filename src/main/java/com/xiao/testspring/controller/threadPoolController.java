@@ -1,6 +1,7 @@
 package com.xiao.testspring.controller;
 
 import com.xiao.testspring.poolManager.cachePoolManager;
+import com.xiao.testspring.poolManager.fixedPoolManager;
 import com.xiao.testspring.util.Result;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -58,6 +59,26 @@ public class threadPoolController {
         return Result.success("成功");
     }
 
+    /**
+     * 定长线程池
+     * @return
+     */
+    @RequestMapping("/fixed")
+    public Result fixedThreadPool(){
+        fixedPoolManager fixedThreadPool = fixedPoolManager.getNewInstance();
+        for (int i = 0; i < 100; i++) {
+            final int ii = i;
+            fixedThreadPool.addExecuteTask(() -> {
+                System.out.println(Thread.currentThread().getName() + "，执行" + ii);
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            });
+        }
+        return Result.success("chenggong");
+    }
 
 
 }
