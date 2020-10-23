@@ -65,19 +65,24 @@ public class threadPoolController {
      */
     @RequestMapping("/fixed")
     public Result fixedThreadPool(){
+        //实例化一个定长线程池
         fixedPoolManager fixedThreadPool = fixedPoolManager.getNewInstance();
         for (int i = 0; i < 100; i++) {
             final int ii = i;
+            System.out.println(Thread.currentThread().getName()+"..."+ii+"  sleep...");
+            //往线程池添加方法
             fixedThreadPool.addExecuteTask(() -> {
-                System.out.println(Thread.currentThread().getName() + "，执行" + ii);
                 try {
+                    //线程阻塞3秒
                     Thread.sleep(3000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                System.out.println(Thread.currentThread().getName() + "，执行" + ii);
             });
         }
-        return Result.success("chenggong");
+        //此时已经添加任务100次
+        return Result.success("成功");
     }
 
 
